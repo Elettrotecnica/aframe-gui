@@ -4,6 +4,7 @@ AFRAME.registerComponent('gui-interactable', {
         hoverAction: {type: 'string'},
         keyCode: {type: 'number', default: -1},
         key: {type: 'string'},
+        windowFunction: {type: 'boolean', default: false},
     },
     init: function () {
         var _this = this;

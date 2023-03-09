@@ -12,7 +12,7 @@ AFRAME.registerComponent('gui-button', {
         activeColor: {type: 'string', default: key_orange},
         toggle: {type: 'boolean', default: false},
         toggleState: {type: 'boolean', default: false},
-    },     
+    },
 
     dependencies: ['aframe-troika-text'],  
 
@@ -111,8 +111,8 @@ AFRAME.registerComponent('gui-button', {
         }
         else
         {
-            buttonEntity.setAttribute('geometry', `primitive: box; 
-                                               width: ${(guiItem.width-guiItem.gap)}; 
+            buttonEntity.setAttribute('geometry', `primitive: box;
+                                               width: ${(guiItem.width-guiItem.gap)};
                                                height: ${(guiItem.height-guiItem.gap)}; 
                                                depth: ${guiItem.depth};`);
             buttonEntity.setAttribute('position', `0 0 ${guiItem.depth/2}`);
@@ -169,13 +169,18 @@ AFRAME.registerComponent('gui-button', {
                //  buttonEntity.setAttribute('material', 'color', data.activeColor);
             }
 
-            var clickActionFunctionName = guiInteractable.clickAction;
-            // console.log("in button, clickActionFunctionName: "+clickActionFunctionName);
-            // find object
-            var clickActionFunction = window[clickActionFunctionName];
-            //console.log("clickActionFunction: "+clickActionFunction);
-            // is object a function?
-            if (typeof clickActionFunction === "function") clickActionFunction(event);
+            if (guiInteractable.windowFunction) {
+                var clickActionFunctionName = guiInteractable.clickAction;
+                // console.log("in button, clickActionFunctionName: "+clickActionFunctionName);
+                // find object
+                var clickActionFunction = window[clickActionFunctionName];
+                //console.log("clickActionFunction: "+clickActionFunction);
+                // is object a function?
+                if (typeof clickActionFunction === "function") clickActionFunction(event);
+            } else {
+                var clickActionFunction = guiInteractable.clickAction;
+                if (typeof clickActionFunction === "function") clickActionFunction(event);
+            }
         });
 
 
@@ -313,15 +318,15 @@ AFRAME.registerComponent('gui-button', {
                                                 color:${data.fontColor};                                                
                                                 font:${data.fontFamily};
                                                 fontSize:${data.fontSize};
-                                                depthOffset:1;
+                                                depthOffset:-1;
                                                 maxWidth:${guiItem.width/1.05};
                                                 `);
         textEntity.setAttribute('troika-text-material', `shader: flat;`);
 
         if(guiItem.bevel){         
-            textEntity.setAttribute('position', `0 0 ${guiItem.depth+(guiItem.bevelThickness/2)+0.05}`);
+            textEntity.setAttribute('position', `0 0 ${guiItem.depth+(guiItem.bevelThickness/2)+0.06}`);
         }else{
-            textEntity.setAttribute('position', `0 0 ${(guiItem.depth/2)+0.05}`);
+            textEntity.setAttribute('position', `0 0 ${(guiItem.depth/2)+0.06}`);
         }
 //        textEntity.setAttribute('troika-text-material', `shader: flat;`);
         this.buttonEntity.appendChild(textEntity);
@@ -340,6 +345,7 @@ AFRAME.registerPrimitive( 'a-gui-button', {
         'onclick': 'gui-interactable.clickAction',
         'onhover': 'gui-interactable.hoverAction',
         'key-code': 'gui-interactable.keyCode',
+        'window-function': 'gui-interactable.windowFunction',
         //gui item general
         'width': 'gui-item.width',
         'height': 'gui-item.height',
