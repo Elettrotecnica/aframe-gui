@@ -20,7 +20,7 @@
     "dist-min": "webpack --mode=production --config webpack.config.min.js",
     "dist-example": "webpack --mode=development --config webpack.config.example.js",
     "dist-example-min": "webpack --mode=production --config webpack.config.example.min.js",
-    "start": "webpack-dev-server --content-base examples/"
+    "start": "webpack-dev-server --static examples/"
   },
   "repository": {
     "type": "git",
